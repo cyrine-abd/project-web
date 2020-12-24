@@ -4,33 +4,36 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
+@IdClass(compo_id_Abonnement.class)
 public class Abonnement implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	@Column(name="date_Abonner")
 	private Date date_Abonner ;
-
+	
+	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="membre_id")
 	private Membre membre ;
 	
+	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="typeAbonnement_id")
 	private TypeAbonnement typeAbonnement ;
+
 
 	public Abonnement(Date date_Abonner, Membre membre, TypeAbonnement typeAbonnement) {
 		super();

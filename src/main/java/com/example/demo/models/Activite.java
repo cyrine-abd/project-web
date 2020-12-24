@@ -41,7 +41,7 @@ public class Activite implements Serializable {
 	@JoinColumn(name="typeActivite_id")
 	private TypeActivite t_acivite ;
 	
-	@OneToMany(mappedBy = "activite")
+	@OneToMany(mappedBy = "activite_id")
 	Set<AboActivite> listeAboActivite =new HashSet<>();
 
 	

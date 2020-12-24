@@ -44,7 +44,7 @@ public class Coach implements Serializable {
 	public Salle salle_coach;
 	
 	@OneToMany(mappedBy = "seance_coach")
-	Set<Seance> coachs_gerer =new HashSet<>();
+	Set<Seance> coachs_seance =new HashSet<>();
 
 	
 	
@@ -54,14 +54,14 @@ public class Coach implements Serializable {
 
 	public Coach(int id_coach, @NotEmpty(message = "*Please provide your first name") String prenom_coach,
 			@NotEmpty(message = "*Please provide your last name") String nom_coach, int tel_coach, Salle salle_coach,
-			Set<Seance> coachs_gerer) {
+			Set<Seance> coachs_seance) {
 		super();
 		this.id_coach = id_coach;
 		this.prenom_coach = prenom_coach;
 		this.nom_coach = nom_coach;
 		this.tel_coach = tel_coach;
 		this.salle_coach = salle_coach;
-		this.coachs_gerer = coachs_gerer;
+		this.coachs_seance = coachs_seance;
 	}
 
 	public int getId_coach() {
@@ -104,12 +104,12 @@ public class Coach implements Serializable {
 		this.salle_coach = salle_coach;
 	}
 
-	public Set<Seance> getCoachs_gerer() {
-		return coachs_gerer;
+	public Set<Seance> getCoachs_seance() {
+		return coachs_seance;
 	}
 
-	public void setCoachs_gerer(Set<Seance> coachs_gerer) {
-		this.coachs_gerer = coachs_gerer;
+	public void setCoachs_seance(Set<Seance> coachs_seance) {
+		this.coachs_seance = coachs_seance;
 	}
 	
 	
