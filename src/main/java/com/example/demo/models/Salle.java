@@ -65,6 +65,7 @@ public class Salle implements Serializable {
 		this.tel_salle = tel_salle;
 		this.membres = membres;
 		this.coachs = coachs;
+		System.out.println("coucou");
 	}
 
 	public int getId_salle() {
