@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Dao.MembreRepository;
+import com.example.demo.Dao.SalleRepository;
 import com.example.demo.models.Membre;
+import com.example.demo.models.Salle;
 
 
 
@@ -23,39 +25,55 @@ import com.example.demo.models.Membre;
 @RestController
 @RequestMapping
 public class MembreController {
-private final MembreRepository MemRep;
+private final MembreRepository membreRepository;
+private final SalleRepository salleRepository ;
+
 	
 	@Autowired
 	public MembreController(MembreRepository MemRep)
-	{this.MemRep=MemRep;}
+	{this.membreRepository=MemRep;
+	this.salleRepository = null;}
 	
-	@PostMapping("/add-Membre")
-    public ResponseEntity<Membre> addMembre(@RequestBody Membre membre){     
-		Membre membre1=MemRep.save(membre);
-        return ResponseEntity.ok(membre);
+	@PostMapping("/add-membre")
+    public Membre createmembre( @RequestBody Membre membre) {
+		Optional<Salle> optionalSalle = salleRepository.findById(membre.salle_membre.getId_salle());
+		membre.setSalle_membre(optionalSalle.get());
+		return membreRepository.save(membre);
     }
-	
-	@GetMapping("/membre/{id}")
-    public ResponseEntity<Membre> findMembre(@PathVariable("id") Integer id){
-        Optional<Membre>  membre=MemRep.findById(id);       
-        return ResponseEntity.ok(membre.get());
+	@DeleteMapping("/delete-membre/{id}")
+    public String deletemembre(@PathVariable(value = "id") int id ) {
+		
+		membreRepository.deleteById(id);
+		return "membre suprimée!!";
 	}
-	@PutMapping("/update-Membre/{id}")
-    public ResponseEntity<Membre> updateMembre(@RequestBody Membre membre1,@PathVariable (value="id") int id) {
-		Membre membre=MemRep.findById(id).get();
-		membre.setAdresse_membre(membre1.getAdresse_membre());
-		membre.setNom_membre(membre1.getNom_membre());
-		membre.setPrenom_membre(membre1.getPrenom_membre());
-		membre.setTel_membre(membre1.getTel_membre());
-		membre.setListeAbonnement(membre1.getListeAbonnement());
-		Membre result = MemRep.save(membre);
-        return ResponseEntity.ok(result);
+	
+	@GetMapping("/membres")
+    public List<Membre> getAll() {
+        return membreRepository.findAll();
     }
 	
-	 @DeleteMapping("/delete-Membre")
-	    public String deleteMembre(@RequestParam int id) {
-		 MemRep.deleteById(id);
-	        return " suppression éffectué";
-	    }
+    @GetMapping("find-membre/{id}")
+    public Optional<Membre> getBiblioById(@PathVariable(value = "id")  int membre_ID)
+    {
+		return membreRepository.findById(membre_ID);
+   
+    }
+    @PutMapping("update-membre/{id}")
+    public ResponseEntity<Membre> updatemembre(@PathVariable(value = "id") int membre_Id,
+            @RequestBody Membre membre_Details){
+      	Optional<Membre> optionelEntity= membreRepository.findById(membre_Id);
+
+      	  Membre membre = optionelEntity.get();
+
+          membre.setNom_membre(membre_Details.getNom_membre());
+          membre.setPrenom_membre(membre_Details.getPrenom_membre());
+          membre.setTel_membre(membre_Details.getTel_membre());
+          membre.setAdresse_membre(membre_Details.getAdresse_membre());
+
+          
+          final Membre updatedmembre = membreRepository.save(membre);
+          return ResponseEntity.ok(updatedmembre);
+      }
+	
 
 }

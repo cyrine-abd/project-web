@@ -13,18 +13,22 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 @Entity
-@IdClass(compo_id_seance.class)
 public class Seance implements Serializable {
 
 	
-	@Id
-	private int id_seance;
+	private static final long serialVersionUID = 1L;
 	
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name="coach_id")
+	public Coach seance_coach;
+
 	
-    private Coach seance_coach;
-	private Activite activite_seance;
+    @ManyToOne
+    @JoinColumn(name = "id_activite", referencedColumnName = "id_activite")
+    public Activite activite_seance;
 	
-	
+    @Id
 	@Column (name= "debut_Gerer")
     private Date debut_Seance ;
 	
@@ -36,6 +40,8 @@ public class Seance implements Serializable {
 
 	public Seance(Coach seance_coach, Activite activite_seance, Date debut_Seance, Date fin_Seance, boolean presence) {
 		super();
+		this.seance_coach = seance_coach;
+		this.activite_seance = activite_seance;
 		this.debut_Seance = debut_Seance;
 		this.fin_Seance = fin_Seance;
 		this.presence = presence;
@@ -45,18 +51,24 @@ public class Seance implements Serializable {
 		super();
 	}
 
-	
+	public Coach getSeance_coach() {
+		return seance_coach;
+	}
+
+	public void setSeance_coach(Coach seance_coach) {
+		this.seance_coach = seance_coach;
+	}
+
+	public Activite getActivite_seance() {
+		return activite_seance;
+	}
+
+	public void setActivite_seance(Activite activite_seance) {
+		this.activite_seance = activite_seance;
+	}
 
 	public Date getDebut_Seance() {
 		return debut_Seance;
-	}
-	public void setId_seance(int id_seance ) {
-		this.id_seance = id_seance;
-	}
-
-	public int getId_seance() {
-		return id_seance;
-		
 	}
 
 	public void setDebut_Seance(Date debut_Seance) {

@@ -21,12 +21,12 @@ public class AboActivite implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="activite_id")
-	private Activite activite_id ;
+	public Activite activite_id ;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="typeAbonnement_id")
-	private TypeAbonnement typeAbonnement ;
+	public TypeAbonnement typeAbonnement ;
 
 	//Getters & Setters
 	
